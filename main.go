@@ -23,6 +23,9 @@ var templates map[string]*template.Template
 
 func fakeip(h http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
+		if ip := r.Header.Get("X-Real-IP"); ip != "" {
+			r.RemoteAddr = fmt.Sprintf("%s:12345", ip)
+		}
 		r.ParseForm()
 		if fakeIp := r.Form.Get("ip"); fakeIp != "" {
 			r.RemoteAddr = fmt.Sprintf("%s:12345", fakeIp)
