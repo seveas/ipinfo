@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IP address info</title>
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400' rel='stylesheet' type='text/css'>
+  <style type="text/css">
+  body,a,a:hover,a:active {
+    font-family: 'Source Sans Pro';
+    font-size: 28px;
+    font-weight: 300;
+    color: #2d2d2d;
+    background-color: #ffffee;
+    text-decoration: none;
+  }
+  a {
+    color: #252525;
+  }
+  a:active, a:hover {
+    color: #434343;
+  }
+  #main {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  th {
+    text-align: left;
+  }
+  </style>
+</head>
+<body>
+<div id="main">
+<table>
+  <tr><th>Your IP address:</th><td>{{.IpAddress}} <a href="/whois-ip">🔍</a></td></tr>
+  {{ if .Hostname }}
+  <tr><th>Your hostname:</th><td>{{.Hostname}} <a href="/whois">🔍</a></td></tr>
+  {{ end }}
+  {{ if .ASN }}
+  <tr><th>Your ISP:</th><td>{{ .ASN.AutonomousSystemOrganization }} ({ .ASN.AutonomousSystemNumber }})</td></tr>
+  {{ end }}
+  {{ if .City }}
+  <tr><th>Your location:</th><td>{{ .City.City.Names.en }}, {{ .City.Country.Names.en }}</td></tr>
+  <tr><th></th><td>
+     <iframe width="500" height="500" frameborder="0" src="https://www.bing.com/maps/embed?h=400&w=500&cp={{ .City.Location.Latitude }}~{{ .City.Location.Longitude }}&lvl=11&typ=d&sty=r&src=SHELL&FORM=MBEDV8" scrolling="no">
+     </iframe>
+  </td></tr>
+  {{ end }}
+  {{ if or .LocalIp .Proxy }}
+  <tr><th colspan="2">You appear to be using a proxy</th></tr>
+  {{ if .Proxy }}
+  <tr><th>Proxy</th><td>{{ .Proxy }}</td></tr>
+  {{ end }}
+  {{ if .LocalIp }}
+  <tr><th>Local IP address</th><td>{{ .LocalIp }}</td></tr>
+  {{ end }}
+  {{ end }}
+</table>
+</div>
+</body>
+</html>
