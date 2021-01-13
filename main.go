@@ -77,7 +77,7 @@ func parseRemoteAddr(r *http.Request) net.IP {
 }
 
 func ipInfoPlain(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte(parseRemoteAddr(r)))
+	w.Write([]byte(parseRemoteAddr(r).String()))
 }
 
 func ipInfoHtml(w http.ResponseWriter, r *http.Request) {
